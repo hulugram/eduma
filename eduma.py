@@ -13,6 +13,8 @@ import telebot
 import os.path
 import time
 from telebot import types
+from selenium.webdriver.support.ui import WebDriverWait
+
 
 
 username = 'eduma'
@@ -21,10 +23,11 @@ url = "http://yenecademy.com/wp-admin/"
 bot_token = '1140618034:AAH-LQfj5XZ1SA7p0F9oKPrg7oKZmpllsZs'
 youtube_api_key = 'AIzaSyCH0rkqRliwjuSCVLm22ziYWh3VhIEZjko'
 
-bot = telebot.TeleBot(bot_token)
+bot = telebot.AsyncTeleBot(bot_token)
 
-# display = Display(visible=0, size=(800, 600)) 
-# display.start() 
+
+display = Display(visible=0, size=(800, 600)) 
+display.start() 
 
 def getYoutubeEmbedCode(videoId):
     embedder = Embedder()
@@ -43,25 +46,21 @@ def formatLessonName(count):
 
 def login():
     opt = webdriver.ChromeOptions()
-    opt.add_argument('--no-sandbox')
-    opt.add_argument('--headless')
-    opt.add_argument('--disable-dev-shm-usage')
+    opt.add_argument('--no-sandbox')a
     driver = webdriver.Chrome(options=opt)
-
     driver.get(url)
-    time.sleep(2)
+    time.sleep(4)
     login_btn = driver.find_element_by_xpath('//*[@id="wp-submit"]')
     email_field = driver.find_element_by_xpath('//*[@id="user_login"]')
     pass_field = driver.find_element_by_xpath('//*[@id="user_pass"]') 
     email_field.send_keys(username)
-    time.sleep(2)
     pass_field.send_keys(password)
+    time.sleep(2)
     login_btn.click()
     driver.find_element_by_xpath('//*[@id="toplevel_page_learn_press"]').click()
     driver.find_element_by_xpath('//*[@id="toplevel_page_learn_press"]/ul/li[3]/a').click()
     driver.find_element_by_xpath('//*[@id="wpbody-content"]/div[3]/a').click()
     return driver
-    
     
 
 def loginAndUpdate(lessons,message,plid):
@@ -75,10 +74,16 @@ def loginAndUpdate(lessons,message,plid):
     publish_button = driver.find_element_by_xpath('//*[@id="publish"]')
     time_selector_path =  driver.find_element_by_xpath('//*[@id="_lp_duration_select"]')
     select = Select(driver.find_element_by_id('_lp_duration_select'))
-
+  
     for lesson in lessons:
-        driver.implicitly_wait(10)
+        title_field = driver.find_element_by_xpath('//*[@id="title"]')
+        media_field = driver.find_element_by_xpath('//*[@id="_lp_lesson_video_intro"]')
+        date_field = driver.find_element_by_xpath('//*[@id="_lp_duration"]')
+        publish_button = driver.find_element_by_xpath('//*[@id="publish"]')
+        time_selector_path =  driver.find_element_by_xpath('//*[@id="_lp_duration_select"]')
+        select = Select(driver.find_element_by_id('_lp_duration_select'))
  
+
         time_array  = str(lesson.duration).split(":") 
 
         final_time = 1
@@ -109,7 +114,6 @@ def loginAndUpdate(lessons,message,plid):
         driver.implicitly_wait(10)
         driver.find_element_by_xpath('//*[@id="wpbody-content"]/div[3]/a').click()
         driver.implicitly_wait(10)
-        time.sleep(2)
         temp_counter =  temp_counter + 1
     bot.send_message(message.chat.id,"Finsiehd adding coruse playlistid = {} , count = {}".format(plid,temp_counter))
 
