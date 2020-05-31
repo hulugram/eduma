@@ -44,6 +44,8 @@ def formatLessonName(count):
 def login():
     opt = webdriver.ChromeOptions()
     opt.add_argument('--no-sandbox')
+    opt.add_argument('--headless')
+    opt.add_argument('--disable-dev-shm-usage')
     driver = webdriver.Chrome(options=opt)
 
     driver.get(url)
