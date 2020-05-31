@@ -25,7 +25,7 @@ youtube_api_key = 'AIzaSyCH0rkqRliwjuSCVLm22ziYWh3VhIEZjko'
 
 bot = telebot.AsyncTeleBot(bot_token)
 
-display = Display(visible=0, size=(2880, 1800)) 
+display = Display(visible=0, size=(1024, 768)) 
 display.start() 
 
 def getYoutubeEmbedCode(videoId):
@@ -45,7 +45,8 @@ def formatLessonName(count):
 
 def login():
     opt = webdriver.ChromeOptions()
-    opt.add_argument('--no-sandbox')a
+    opt.add_argument('--no-sandbox')
+    opt.add_argument('--window-size=768,1024')
     driver = webdriver.Chrome(options=opt)
     driver.get(url)
     time.sleep(4)
