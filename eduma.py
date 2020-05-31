@@ -25,8 +25,7 @@ youtube_api_key = 'AIzaSyCH0rkqRliwjuSCVLm22ziYWh3VhIEZjko'
 
 bot = telebot.AsyncTeleBot(bot_token)
 
-
-display = Display(visible=0, size=(800, 600)) 
+display = Display(visible=0, size=(2880, 1800)) 
 display.start() 
 
 def getYoutubeEmbedCode(videoId):
